@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const d=new Date();
 let localTime = d.getTime();
-console.log(d.getTimezoneOffset()*60000/3600000);
+console.log(`Timezone is ${d.getTimezoneOffset()*60000/3600000} hours.`);
 //DATABASE
 
 import * as mysql  from 'mysql';
@@ -37,7 +37,8 @@ import { NextFunction } from 'connect';
 
 app.use(function(req, res, next){
 	res.locals.connection = mysql.createConnection({
-		host     : 'db20.papaki.gr',
+  //	host     : 'db20.papaki.gr',
+    host     : 'localhost', 
 		user     : 'y6089_user',
 		password : '$lk7Og47',
 		database : 'sports'
