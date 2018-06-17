@@ -1,4 +1,5 @@
 import * as  express from 'express';
+import initDirs from './init';
 const router: express.Router = express.Router();
 
 /* GET athletes listing. */
@@ -23,6 +24,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/:id', function (req, res) {
   console.log(req.params.id);
+  initDirs();
   res.locals.connection.query(`SELECT * from athletes WHERE id = ${req.params.id}`, function (error: any, results: any, fields: any) {
     if (error) {
       //  console.log(`affected rows = ${results.affectedRows} results = ${results.length}`);

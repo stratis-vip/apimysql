@@ -28,13 +28,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const d = new Date();
-let localTime = d.getTime();
-console.log(`Timezone is ${d.getTimezoneOffset() * 60000 / 3600000} hours.`);
+// const d = new Date();
+// let localTime = d.getTime();
+// console.log(`Timezone is ${d.getTimezoneOffset() * 60000 / 3600000} hours.`);
 //DATABASE
 
 import * as mysql from 'mysql';
-import { NextFunction } from 'connect';
+//import { NextFunction } from 'connect';
 
 app.use(function (req, res, next) {
   res.locals.connection = mysql.createConnection({
@@ -49,17 +49,17 @@ app.use(function (req, res, next) {
       console.error('error connecting:' + err.message);
       return;
     } else {
-      console.log(`${res.locals.connection} is made `);
+      console.log(`connection is made `);
     }
+
   }));
 
   next();
 });
 
-
-app.all('/*', function (req, res, next) {
+app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
@@ -70,11 +70,12 @@ app.use('/zones', zones);
 app.use('/pub-categories', pubCategories);
 app.use('/activities',activities);
 
+
 // catch 404 and forward to error handler
-interface Error {
-  status?: number;
-  message?: string;
-}
+// interface Error {
+//   status?: number;
+//   message?: string;
+// }
 
 app.use(function (req, res, next) {
   const err = new Error('Not Found');
