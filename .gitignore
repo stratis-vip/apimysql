@@ -1,3 +1,6 @@
 server.zip
-dist
+dist/athletes
+dist/bin
+dist/routes
+dist/app.*
 node_modules

@@ -9,7 +9,7 @@ import * as mysql from 'mysql';
 const athletePath = path.join(__dirname, '../athletes');
 
 /* GET athletes listing. */
-function initDirs(){
+function initDirs() {
 
     let con = mysql.createConnection({
         //	host     : 'db20.papaki.gr',
@@ -31,18 +31,26 @@ function initDirs(){
                 }
             }
 
+            if (!fs.existsSync(athletePath)) {
+                //Δεν υπάρχει ο κατάλογος και πρέπει να δημιουργηθεί
+                fs.mkdirSync(athletePath);
+            }
             let dirs = fs.readdirSync(athletePath).map(value => parseInt(value));
+            if (dirs.length > 0) {
+                for (let i = 0; i !== dirs.length; i++) {
+                    if (!athletes.includes(dirs[i])) {
+                        fse.removeSync(path.join(athletePath, dirs[i].toString()));
+                    }
+                }
+            }
+            if (athletes.length > 0) {
+                for (let i = 0; i !== athletes.length; i++) {
+                    if (!dirs.includes(athletes[i])) {
+                        fs.mkdirSync(path.join(athletePath, athletes[i].toString()));
+                    }
+                }
+            }
 
-            for (let i = 0; i !== dirs.length; i++) {
-                if (!athletes.includes(dirs[i])) {
-                    fse.removeSync(path.join(athletePath, dirs[i].toString()));
-                }
-            }
-            for (let i = 0; i !== athletes.length; i++) {
-                if (!dirs.includes(athletes[i])) {
-                    fs.mkdirSync(path.join(athletePath, athletes[i].toString()));
-                }
-            }
         }
     });
     con.end();
